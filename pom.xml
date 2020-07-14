@@ -9,6 +9,8 @@
         <module>eim-service</module>
         <module>eim-utils</module>
         <module>eim-web</module>
+        <module>eim-oauth</module>
+        <module>eim-oauth</module>
     </modules>
 
     <parent>
