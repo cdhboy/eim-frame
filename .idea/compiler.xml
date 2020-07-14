@@ -18,7 +18,7 @@
       <module name="eim-dao" target="1.8" />
       <module name="eim-domain" target="1.8" />
       <module name="eim-frame" target="1.8" />
-      <module name="eim-oauth" target="1.5" />
+      <module name="eim-oauth" target="1.8" />
       <module name="eim-service" target="1.8" />
       <module name="eim-utils" target="1.8" />
       <module name="eim-web" target="1.8" />
@@ -28,7 +28,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="eim-dao" options="-parameters" />
       <module name="eim-domain" options="-parameters" />
-      <module name="eim-oauth" options="" />
+      <module name="eim-oauth" options="-parameters" />
       <module name="eim-service" options="-parameters" />
       <module name="eim-utils" options="-parameters" />
       <module name="eim-web" options="-parameters" />

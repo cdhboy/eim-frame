@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/eim-dao/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eim-domain/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eim-oauth/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eim-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eim-utils/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eim-web/src/main/java" charset="UTF-8" />
