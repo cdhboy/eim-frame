@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/eim-dao/eim-dao.iml" filepath="$PROJECT_DIR$/eim-dao/eim-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eim-domain/eim-domain.iml" filepath="$PROJECT_DIR$/eim-domain/eim-domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eim-frame.iml" filepath="$PROJECT_DIR$/eim-frame.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eim-service/eim-service.iml" filepath="$PROJECT_DIR$/eim-service/eim-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eim-utils/eim-utils.iml" filepath="$PROJECT_DIR$/eim-utils/eim-utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eim-web/eim-web.iml" filepath="$PROJECT_DIR$/eim-web/eim-web.iml" />
+    </modules>
+  </component>
+</project>

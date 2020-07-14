@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="eim-service" />
+        <module name="eim-domain" />
+        <module name="eim-utils" />
+        <module name="eim-web" />
+        <module name="eim-dao" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="eim-dao" target="1.8" />
+      <module name="eim-domain" target="1.8" />
+      <module name="eim-frame" target="1.8" />
+      <module name="eim-service" target="1.8" />
+      <module name="eim-utils" target="1.8" />
+      <module name="eim-web" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="eim-dao" options="-parameters" />
+      <module name="eim-domain" options="-parameters" />
+      <module name="eim-service" options="-parameters" />
+      <module name="eim-utils" options="-parameters" />
+      <module name="eim-web" options="-parameters" />
+    </option>
+  </component>
+</project>
