@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
+
 @RestController
 @RequestMapping("/index")
 public class TestController {
@@ -14,6 +16,12 @@ public class TestController {
 
     @RequestMapping("/hello")
     public String hello() {
-        return testService.getHello();
+
+        try {
+            return testService.getHello();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
     }
 }
