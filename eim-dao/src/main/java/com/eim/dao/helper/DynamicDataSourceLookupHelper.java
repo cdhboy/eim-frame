@@ -4,19 +4,20 @@ import com.eim.dao.DynamicDataSourceContextHolder;
 import com.eim.dao.DynamicRoutingDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 @Component("dynamicDataSourceLookupHelper")
 public class DynamicDataSourceLookupHelper {
     @Autowired
     @Qualifier("datasource")
     private DynamicRoutingDataSource dataSource;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     //存储当前线程获取的数据库连接
     private static final ThreadLocal<Connection> connHolder = new ThreadLocal<>();
@@ -54,6 +55,20 @@ public class DynamicDataSourceLookupHelper {
             connHolder.set(null);
         }
 
+        DynamicDataSourceContextHolder.removeDataSourceRouterKey();
+    }
+
+    public void changeDataSourceByKey(String dataSourceKey){
+        String key = dataSourceKey;
+
+        if (!DynamicDataSourceContextHolder.containsDataSource(key)) {
+            key = "default";
+        }
+
+        DynamicDataSourceContextHolder.setDataSourceRouterKey(key);
+    }
+
+    public void releaseDataSourceByKey(){
         DynamicDataSourceContextHolder.removeDataSourceRouterKey();
     }
 }
