@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eim.oauth.mapper.UserMapper">
+	<select id="getUser" parameterType="String"
+		resultType="com.eim.oauth.entity.User">
+		select user_id,
+		       username,
+		       password,
+		       active
+		  from sys_user where username = #{username}
+	</select>
+
+	<select id="getPermission" parameterType="Long"
+			resultType="com.eim.oauth.entity.Permission">
+		select permission_name,
+		       permission_url
+		  from v_sys_permission where user_id = #{user_id}
+	</select>
+
+</mapper>
