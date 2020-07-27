@@ -1,20 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eim.oauth.mapper.UserMapper">
-	<select id="getUser" parameterType="String"
-		resultType="com.eim.oauth.entity.User">
-		select user_id,
-		       username,
-		       password,
+	<resultMap type="com.eim.oauth.entity.User" id="userResult">
+		<result column="user_sysid" property="userid"/>
+		<result column="user_id" property="username"/>
+		<result column="user_pwd" property="password"/>
+		<result column="company_id" property="companyid" />
+		<result column="role_id" property="roleid" />
+		<result column="is_super" property="issuper" />
+		<result column="active" property="active" />
+	</resultMap>
+
+	<select id="getUser" parameterType="String" resultMap="userResult">
+		select user_sysid,
+		       user_id,
+		       user_pwd,
+		       company_id,
+		       role_id,
+		       is_super,
 		       active
-		  from sys_user where username = #{username}
+		  from v_sys_user where user_id = #{username} or login_id = #{username}
 	</select>
 
-	<select id="getPermission" parameterType="Long"
-			resultType="com.eim.oauth.entity.Permission">
-		select permission_name,
-		       permission_url
-		  from v_sys_permission where user_id = #{user_id}
-	</select>
+	<resultMap type="com.eim.oauth.entity.Permission" id="permissionResult">
+		<result column="operate_id" property="permissionname"/>
+	</resultMap>
 
+	<select id="getPermission"  resultMap="permissionResult">
+		select operate_id
+		  from v_sys_grant
+		 where menu_type = 'W'
+		   and operate_id is not null
+		   and company_id = #{companyid, jdbcType=INTEGER}
+			<if test="issuper = 0">
+				and role_id = #{roleid, jdbcType=INTEGER}
+			</if>
+	</select>
 </mapper>

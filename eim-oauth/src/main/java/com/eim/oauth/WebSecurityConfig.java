@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -52,11 +51,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(jwtUserDetailsService)
                 // 使用 BCrypt 进行密码的 hash
                 .passwordEncoder(passwordEncoder());
+
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        //return new BCryptPasswordEncoder();
+
+       return new EimPasswordEncoder();
     }
 
     @Bean
@@ -66,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        System.out.println("authenticationPath:"+authenticationPath);
+        //System.out.println("authenticationPath:"+authenticationPath);
 
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()

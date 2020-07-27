@@ -1,15 +1,15 @@
 server:
   port: 8080
-  #servlet:
-  #  context-path: /eim-serv
+  servlet:
+    context-path: /eim-serv
 
 spring:
   datasource:
     default:
       username: ruyoo
       password: ruyoo123
-      url: jdbc:mysql://10.170.20.135:3306/ruyoodb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://10.170.20.135:3306/ruyoodb
+      driver-class-name: com.mysql.jdbc.Driver
       type: com.alibaba.druid.pool.DruidDataSource
       #Spring Boot 默认是不注入这些属性值的，需要自己绑定
       #druid 数据源专有配置
@@ -38,8 +38,8 @@ spring:
     hfzx:
       username: hfzx
       password: hfzx123
-      url: jdbc:mysql://10.170.20.135:3306/hfzxdb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://10.170.20.135:3306/hfzxdb
+      driver-class-name: com.mysql.jdbc.Driver
       type: com.alibaba.druid.pool.DruidDataSource
       #Spring Boot 默认是不注入这些属性值的，需要自己绑定
       #druid 数据源专有配置

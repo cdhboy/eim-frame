@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,20 +34,18 @@ public class JwtUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
         }
 
-        String password = new BCryptPasswordEncoder().encode(user.getPassword());
+       // String password = new EimPasswordEncoder().encode(username + "@" + user.getPassword());
 
         List<String> grantedAuthorities = new ArrayList<>();
 
-        List<Permission> list = userMapper.getPermission(user.getUserid());
+        List<Permission> list = userMapper.getPermission(user.getCompanyid(), user.getRoleid(), user.getIssuper());
 
         for (Permission permission : list) {
             if (permission != null && permission.getPermissionname() != null) {
-
-                //GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getPermissionname());
                 grantedAuthorities.add(permission.getPermissionname());
             }
         }
 
-        return new JwtUser(String.valueOf(user.getUserid()), username, password, grantedAuthorities, user.getActive());
+        return new JwtUser(String.valueOf(user.getUserid()), user.getUsername(), user.getPassword(), grantedAuthorities, user.getActive());
     }
 }

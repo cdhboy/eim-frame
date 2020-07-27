@@ -1,6 +1,7 @@
 package com.eim.oauth;
 
 
+import com.eim.dao.helper.DynamicDataSourceLookupHelper;
 import com.eim.oauth.service.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -24,6 +26,9 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
+    private DynamicDataSourceLookupHelper dynamicDataSourceLookupHelper;
+
+    @Autowired
     private JwtUserDetailsService jwtUserDetailsService;
 
     @Autowired
@@ -35,10 +40,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Value("${jwt.header}")
     private String tokenHeader;
 
+    private String dsKeyHeader = "DsKey";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader(tokenHeader);
+        final String dsKey = request.getHeader(dsKeyHeader);
+        if(!StringUtils.isEmpty(dsKey))
+            dynamicDataSourceLookupHelper.changeDataSourceByKey(dsKey);
         String username = null;
         String jwtToken = null;
         // JWT报文表头的格式是"Bearer token". 去除"Bearer ",直接获取token
@@ -74,6 +84,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
+
+
+        dynamicDataSourceLookupHelper.releaseDataSourceByKey();
 
         chain.doFilter(request, response);
     }

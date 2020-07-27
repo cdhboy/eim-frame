@@ -1,6 +1,8 @@
 package com.eim.oauth;
 
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,31 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.toString());
+
+        //int code = HttpServletResponse.SC_UNAUTHORIZED;
+        String error = authException.toString();
+
+        if ( authException instanceof UsernameNotFoundException) {
+            //code = HttpServletResponse.SC_
+            error = "账户名或者密码错误!";
+        }else if (authException instanceof BadCredentialsException) {
+            error ="账户名或者密码错误!";
+        } else if (authException instanceof LockedException) {
+            error = "账户被锁定";
+        } else if (authException instanceof CredentialsExpiredException) {
+            error = "认证过期";
+        } else if (authException instanceof AccountExpiredException) {
+            error = "账户过期";
+        } else if (authException instanceof DisabledException) {
+            error ="账户被禁用";
+        }
+        /*else {
+            error ="登录失败!";
+        }*/
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("text/plain;charset=utf-8");
+        response.setCharacterEncoding("utf-8");
+        response.getWriter().write(error);
+        response.getWriter().flush();
     }
 }
