@@ -16,7 +16,7 @@ public class EncryptUtil {
 
     private final static String ALGORITHM = "AES";// "AES";
 
-    private final static String DEFAULT_KEY = "AES_ENCRYP_KEY";
+    private final static String DEFAULT_KEY = "AES_ENCRYPT_KEY";
 
     /**
      * 加密

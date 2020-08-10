@@ -28,7 +28,7 @@ public class CommonServiceImpl implements CommonService {
             resultEntity = ResultEntity.ok(list.toArray());
         } catch (Exception e) {
             e.printStackTrace();
-            resultEntity = ResultEntity.error(e);
+            resultEntity = ResultEntity.fail(e);
         }
 
         return resultEntity;
@@ -56,7 +56,7 @@ public class CommonServiceImpl implements CommonService {
                 resultEntity = ResultEntity.fail("请求参数不合法");
             }
         } catch (Exception e) {
-            resultEntity = ResultEntity.error(e);
+            resultEntity = ResultEntity.fail(e);
         }
 
         return resultEntity;
@@ -71,7 +71,7 @@ public class CommonServiceImpl implements CommonService {
 
             resultEntity = ResultEntity.ok(list.toArray());
         } catch (Exception e) {
-            resultEntity = ResultEntity.error(e);
+            resultEntity = ResultEntity.fail(e);
         }
 
         return resultEntity;

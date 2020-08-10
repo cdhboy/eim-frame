@@ -1,5 +1,7 @@
 package com.eim.dao.helper;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,7 @@ import java.util.Map;
 public class DaoHelper {
 
     //private final String NAME = "dynamicDataSourceLookupHelper";
+    private final Log logger = LogFactory.getLog(this.getClass());
 
     private final DynamicDataSourceLookupHelper dynamicDataSourceLookupHelper;
 
@@ -84,7 +87,11 @@ public class DaoHelper {
      */
     public <T> List<T> doQuery(String sql, Object[] objs, Class<T> clazz) {
         BeanPropertyRowMapper<T> rowMapper = new BeanPropertyRowMapper<>(clazz);
-        return jdbcTemplate.query(sql, objs, rowMapper);
+        List<T> list = jdbcTemplate.query(sql, objs, rowMapper);
+
+        logger.info(sql);
+
+        return list;
     }
 
     /**
@@ -95,7 +102,11 @@ public class DaoHelper {
      * @return
      */
     public List<Map<String, Object>> doQuery(String sql, Object[] objs) {
-        return jdbcTemplate.queryForList(sql, objs);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, objs);
+
+        logger.info(sql);
+
+        return list;
     }
 
     /**
@@ -120,6 +131,8 @@ public class DaoHelper {
             list = jdbcTemplate.query(sql, objs, rowMapper);
 
         dynamicDataSourceLookupHelper.releaseDataSourceByKey();
+
+        logger.info(sql);
 
         return list;
     }
@@ -150,6 +163,8 @@ public class DaoHelper {
             list = jdbcTemplate.query(sql, objs, rowMapper);
 
         dynamicDataSourceLookupHelper.releaseDataSourceByKey();
+
+        logger.info(sql);
 
         return list;
     }
@@ -273,9 +288,19 @@ public class DaoHelper {
      * @return
      */
     public List<Object> doProc(String proc, Object[] objs, int output) {
-        List<Object> list = (List<Object>) jdbcTemplate.execute(con -> {
+        List<Object> list = jdbcTemplate.execute(con -> {
             //String storedProc = "";// 调用的sql
-            CallableStatement cs = con.prepareCall(proc);
+            String pdCall = "{call " + proc + "(";
+
+            for (int i = 0; i < (objs.length + output - 1); i++) {
+                pdCall += "?,";
+            }
+            pdCall += "?)}";
+
+            CallableStatement cs = con.prepareCall(pdCall);
+
+            return cs;
+        }, (CallableStatementCallback<List<Object>>) cs -> {
             //输入参数
             for (int i = 0; i < objs.length; i++) {
                 cs.setObject(i + 1, objs[i]);
@@ -285,12 +310,12 @@ public class DaoHelper {
             for (int i = 0; i < output; i++) {
                 cs.registerOutParameter(objs.length + 1 + i, Types.VARCHAR);
             }
-            return cs;
-        }, (CallableStatementCallback<List<Object>>) cs -> {
+
             cs.execute();
+
             List<Object> list1 = new ArrayList<>();
             for (int i = 0; i < output; i++) {
-                list1.add(cs.getObject(objs.length + 1 + i + 1));
+                list1.add(cs.getObject(objs.length + i + 1));
             }
             return list1;// 获取输出参数的值
         });

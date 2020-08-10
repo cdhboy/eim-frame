@@ -1,8 +1,9 @@
 package com.eim.controller.common;
 
 import com.eim.controller.AbstractController;
-import com.eim.domain.common.ResultEntity;
+import com.eim.domain.common.ProcEntity;
 import com.eim.domain.common.QueryEntity;
+import com.eim.domain.common.ResultEntity;
 import com.eim.domain.common.UpdateEntity;
 import com.eim.service.common.impl.CommonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class CommonObjectController extends AbstractController {
         } catch (Exception e) {
             e.printStackTrace();
 
-            resultEntity = ResultEntity.error(e);
+            resultEntity = ResultEntity.fail(e);
         }
 
         try {
@@ -56,7 +57,29 @@ public class CommonObjectController extends AbstractController {
         } catch (Exception e) {
             e.printStackTrace();
 
-            resultEntity = ResultEntity.error(e);
+            resultEntity = ResultEntity.fail(e);
+        }
+
+        try {
+            sendResultEntityByObj(response, resultEntity);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping("/proc")
+    public void proc(HttpServletRequest request, HttpServletResponse response) {
+        ResultEntity resultEntity = null;
+
+        try {
+            ProcEntity procEntity = getRequestEntityByObj(request, ProcEntity.class);
+
+            resultEntity = commonService.proc(procEntity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            resultEntity = ResultEntity.fail(e);
         }
 
         try {

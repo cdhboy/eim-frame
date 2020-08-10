@@ -2,6 +2,7 @@ package com.eim.controller.common;
 
 import com.eim.annotation.SecurityParameter;
 import com.eim.controller.AbstractController;
+import com.eim.domain.common.ProcEntity;
 import com.eim.domain.common.QueryEntity;
 import com.eim.domain.common.ResultEntity;
 import com.eim.domain.common.UpdateEntity;
@@ -19,9 +20,10 @@ public class CommonJsonController extends AbstractController {
     @Autowired
     private CommonServiceImpl commonService;
 
+
     @SecurityParameter( outEncode = false)
     @RequestMapping("/query")
-    public ResultEntity query(@RequestBody  QueryEntity queryEntity) throws JsonProcessingException {
+    public ResultEntity query(@RequestBody QueryEntity queryEntity) throws JsonProcessingException {
 
 //        ObjectMapper objectMapper = new ObjectMapper();
 //        QueryEntity queryEntity = objectMapper.readValue(json, QueryEntity.class);
@@ -31,14 +33,13 @@ public class CommonJsonController extends AbstractController {
             resultEntity = commonService.query(queryEntity);
         } catch (Exception e) {
             e.printStackTrace();
-            resultEntity = ResultEntity.error(e);
+            resultEntity = ResultEntity.fail(e);
         }
 
         return resultEntity;
     }
 
-
-    @SecurityParameter(outEncode = false)
+    @SecurityParameter( outEncode = false)
     @RequestMapping("/update")
     public ResultEntity update(@RequestBody UpdateEntity updateEntity) {
 
@@ -48,9 +49,26 @@ public class CommonJsonController extends AbstractController {
             resultEntity = commonService.update(updateEntity);
         } catch (Exception e) {
             e.printStackTrace();
-            resultEntity = ResultEntity.error(e);
+            resultEntity = ResultEntity.fail(e);
         }
 
         return resultEntity;
+    }
+
+    @SecurityParameter( outEncode = false)
+    @RequestMapping("/proc")
+    public ResultEntity proc(@RequestBody ProcEntity procEntity) {
+        ResultEntity resultEntity = null;
+
+        try {
+            resultEntity = commonService.proc(procEntity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            resultEntity = ResultEntity.fail(e);
+        }
+
+       return resultEntity;
     }
 }

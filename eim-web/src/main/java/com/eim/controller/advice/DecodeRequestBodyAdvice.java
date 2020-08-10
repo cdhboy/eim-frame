@@ -54,7 +54,10 @@ public class DecodeRequestBodyAdvice extends RequestBodyAdviceAdapter {
 
         public MyHttpInputMessage(HttpInputMessage inputMessage) throws Exception {
             this.headers = inputMessage.getHeaders();
-            this.body = new ByteArrayInputStream(EncryptUtil.decrypt(Base64.decodeBase64(getBodyString(inputMessage.getBody(), "utf-8"))));
+            byte[] bs = EncryptUtil.decrypt(Base64.decodeBase64(getBodyString(inputMessage.getBody(), "utf-8")));
+            //System.out.println(new String(bs));
+
+            this.body = new ByteArrayInputStream(bs);
         }
 
         @Override

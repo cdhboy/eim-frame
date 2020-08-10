@@ -8,7 +8,7 @@ public class ResultEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    //0:成功，1:失败，9:异常
+    //0:成功，1:失败
     private String code;
     private String desc;
     private Object[] data;
@@ -55,15 +55,11 @@ public class ResultEntity implements Serializable {
         return new ResultEntity("1", desc, data);
     }
 
-    public static ResultEntity error(String desc) {
-        return new ResultEntity("9", desc, null);
-    }
-
-    public static ResultEntity error(Throwable err) {
+    public static ResultEntity fail(Throwable err) {
         StringWriter sw = new StringWriter();
         err.printStackTrace(new PrintWriter(sw, true));
         sw.flush();
 
-        return error(sw.toString());
+        return fail(sw.toString());
     }
 }
