@@ -10,22 +10,22 @@ import java.io.*;
 @Service
 public class FileServiceImpl implements FileService {
 
-    @Value("${fiel.store.type}")
+    @Value("${file.store.type}")
     private String storeType;
 
-    @Value("${fiel.store.local}")
+    @Value("${file.store.local}")
     private String localPath;
 
-    @Value("${fiel.store.ftp.host}")
+    @Value("${file.store.ftp.host}")
     private String ftpHost;
 
-    @Value("${fiel.store.ftp.user}")
+    @Value("${file.store.ftp.user}")
     private String ftpUser;
 
-    @Value("${fiel.store.ftp.pwd}")
+    @Value("${file.store.ftp.pwd}")
     private String ftpPwd;
 
-    @Value("${fiel.store.ftp.path}")
+    @Value("${file.store.ftp.path}")
     private String ftpPath;
 
     @Override
