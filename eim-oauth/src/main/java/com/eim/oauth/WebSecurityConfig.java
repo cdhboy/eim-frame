@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         //return new BCryptPasswordEncoder();
 
-       return new EimPasswordEncoder();
+        return new EimPasswordEncoder();
     }
 
     @Bean
@@ -66,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         //System.out.println("authenticationPath:"+authenticationPath);
@@ -88,13 +89,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
                 .cacheControl();
     }
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         // AuthenticationTokenFilter will ignore the below paths
         web
                 .ignoring()
                 .antMatchers(
-                       HttpMethod.POST,
+                        HttpMethod.POST,
                         authenticationPath
                 )
 

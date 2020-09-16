@@ -2,6 +2,7 @@ package com.eim.oauth;
 
 
 import com.eim.dao.helper.DynamicDataSourceLookupHelper;
+import com.eim.oauth.entity.JwtUser;
 import com.eim.oauth.service.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 // that the current user is authenticated. So it passes the
                 // Spring Security Configurations successfully.
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                //保存用户信息
+                jwtTokenUtil.storeUser(((JwtUser)userDetails).getUser());
             }
         }
 

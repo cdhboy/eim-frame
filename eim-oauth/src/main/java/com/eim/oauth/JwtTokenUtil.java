@@ -1,5 +1,6 @@
 package com.eim.oauth;
 
+import com.eim.oauth.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -2550185165626007488L;
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    private static final ThreadLocal<User> userContextHolder = new ThreadLocal<>();
 
     @Value("${jwt.secret}")
     private String secret;
@@ -63,5 +65,13 @@ public class JwtTokenUtil implements Serializable {
     public Boolean validateToken(String token, String username) {
         final String username1 = getUsernameFromToken(token);
         return (username1.equals(username) && !isTokenExpired(token));
+    }
+
+    public void storeUser(User user){
+        userContextHolder.set(user);
+    }
+
+    public User getUser(){
+        return userContextHolder.get();
     }
 }

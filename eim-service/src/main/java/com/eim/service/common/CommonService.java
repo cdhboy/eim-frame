@@ -1,10 +1,9 @@
 package com.eim.service.common;
 
-import com.eim.domain.common.ResultEntity;
-import com.eim.domain.common.FileEntity;
-import com.eim.domain.common.ProcEntity;
-import com.eim.domain.common.QueryEntity;
-import com.eim.domain.common.UpdateEntity;
+import com.eim.domain.common.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.OutputStream;
 
 public interface CommonService {
 
@@ -12,9 +11,9 @@ public interface CommonService {
 
     public ResultEntity update(UpdateEntity updateEntity);
 
-    public ResultEntity download(FileEntity fileEntity);
+    public ResultEntity download(FileEntity fileEntity, OutputStream os);
 
-    public ResultEntity upload(FileEntity fileEntity);
+    public ResultEntity upload(FileEntity fileEntity, MultipartFile file);
 
     public ResultEntity delete(FileEntity fileEntity);
 

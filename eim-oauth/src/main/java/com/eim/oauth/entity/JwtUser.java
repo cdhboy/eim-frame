@@ -20,30 +20,33 @@ public class JwtUser implements UserDetails {
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
     private final int enabled;
+    private final User user;
 
     public JwtUser(
             String id,
             String username,
             String password, List<String> authorities,
-            int enabled
+            int enabled,User user
     ) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.authorities = mapToGrantedAuthorities(authorities);
         this.enabled = enabled;
+        this.user = user;
     }
     public JwtUser(
             String id,
             String username,
             String password, String authoritie,
-            int enabled
+            int enabled,User user
     ) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.authorities = mapToGrantedAuthorities(authoritie);
         this.enabled = enabled;
+        this.user = user;
     }
     private List<GrantedAuthority> mapToGrantedAuthorities(List<String> authorities) {
         return authorities.stream()
@@ -90,5 +93,9 @@ public class JwtUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled > 0;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

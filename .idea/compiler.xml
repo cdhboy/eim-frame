@@ -8,28 +8,32 @@
         <outputRelativeToContentRoot value="true" />
         <module name="eim-oauth" />
         <module name="eim-domain" />
+        <module name="eim-dao" />
         <module name="eim-utils" />
         <module name="eim-web" />
-        <module name="eim-dao" />
         <module name="eim-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="eim-api" target="1.8" />
       <module name="eim-dao" target="1.8" />
       <module name="eim-domain" target="1.8" />
       <module name="eim-frame" target="1.8" />
       <module name="eim-oauth" target="1.8" />
       <module name="eim-service" target="1.8" />
+      <module name="eim-test" target="1.5" />
       <module name="eim-utils" target="1.8" />
       <module name="eim-web" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="eim-api" options="-parameters" />
       <module name="eim-dao" options="-parameters" />
       <module name="eim-domain" options="-parameters" />
       <module name="eim-oauth" options="-parameters" />
       <module name="eim-service" options="-parameters" />
+      <module name="eim-test" options="" />
       <module name="eim-utils" options="-parameters" />
       <module name="eim-web" options="-parameters" />
     </option>
