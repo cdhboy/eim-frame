@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 @Controller
@@ -89,7 +90,7 @@ public class CommonObjectController extends AbstractController {
     }
 
     @RequestMapping("/upload")
-    public void upload(@RequestParam("file") MultipartFile file, @RequestParam("Key") String key, @RequestParam("Type") String type,
+    public void upload(@RequestParam("File") MultipartFile file, @RequestParam("Key") String key, @RequestParam("Type") String type,
                        @RequestParam("Main") String main, @RequestParam("DsKey") String dsKey,
                        @RequestParam("Company") String company, HttpServletRequest request, HttpServletResponse response) {
         ResultEntity resultEntity = null;
@@ -119,14 +120,23 @@ public class CommonObjectController extends AbstractController {
     @RequestMapping("/download")
     public void download(HttpServletRequest request, HttpServletResponse response) {
 
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             FileEntity fileEntity = getRequestEntityByObj(request, FileEntity.class);
-            ResultEntity resultEntity = commonService.download(fileEntity,response.getOutputStream());
+            ResultEntity resultEntity = commonService.download(fileEntity, os);
 
             response.setHeader("code",resultEntity.getCode());
             response.setHeader("desc",new String(resultEntity.getDesc().getBytes(),"ISO-8859-1"));
+            response.getOutputStream().write(os.toByteArray());
+
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            try {
+                os.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

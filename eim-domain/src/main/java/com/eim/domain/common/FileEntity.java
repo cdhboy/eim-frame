@@ -6,6 +6,7 @@ public class FileEntity extends BaseEntity {
 
     private String id;
     private String key;
+    private String path;
     private String type;
     private String main;
     private String company;
@@ -48,5 +49,13 @@ public class FileEntity extends BaseEntity {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

@@ -122,6 +122,9 @@ public class CommonServiceImpl implements CommonService {
             String sql = "select file_path from sys_file_config where file_type = '" + fileEntity.getType() + "'";
 
             List<Map<String, Object>> list = daoHelper.doQuery(fileEntity.getDsKey(), sql);
+
+            if (list.size() == 0) throw new Exception("附件路径没有配置");
+
             String path = list.get(0).get("file_path").toString();
             String fileName = CommonUtil.getCurrentTime("yyyyMMddHHmmssSSS") + "-" + file.getOriginalFilename();
             String dir = CommonUtil.getCurrentTime("yyyyMM");
@@ -154,7 +157,7 @@ public class CommonServiceImpl implements CommonService {
     public ResultEntity delete(FileEntity fileEntity) {
         ResultEntity resultEntity = null;
         try {
-            String sql = "select f.file_id, f.file_name, f.file_dir, c.file_path from sys_file f inner join sys_file_config c on f.file_type = c.file_type "
+            String sql = "select f.file_id, f.file_name, f.file_dir, c.file_path, f.company_id from sys_file f inner join sys_file_config c on f.file_type = c.file_type "
                     + "where 1 = 1";
             if (StringUtils.hasText(fileEntity.getId())) {
                 sql += " and f.file_id = " + fileEntity.getId();
@@ -168,11 +171,11 @@ public class CommonServiceImpl implements CommonService {
             for (Object obj : list) {
 
                 Map<String, Object> map = (Map<String, Object>) obj;
-                String id = list.get(0).get("file_id").toString();
-                String path = list.get(0).get("file_path").toString();
-                String fileName = list.get(0).get("file_name").toString();
-                String dir = list.get(0).get("file_dir").toString();
-                String company = list.get(0).get("company_id").toString();
+                String id = map.get("file_id").toString();
+                String path = map.get("file_path").toString();
+                String fileName = map.get("file_name").toString();
+                String dir = map.get("file_dir").toString();
+                String company = map.get("company_id").toString();
 
                 fileService.deleteFile(company + File.separator + path + File.separator + dir, fileName);
                 daoHelper.doUpdate(fileEntity.getDsKey(), "delete from sys_file where file_id =" + id);

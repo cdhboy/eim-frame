@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/common/json/v1")
@@ -99,21 +100,30 @@ public class CommonJsonController extends AbstractController {
     }
 
     @RequestMapping("/download")
-    public void download(HttpServletRequest request, HttpServletResponse response) {
+    public void download(@RequestBody FileEntity fileEntity, HttpServletResponse response) {
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
 
         try {
-            FileEntity fileEntity = getRequestEntityByObj(request, FileEntity.class);
-            ResultEntity resultEntity = commonService.download(fileEntity,response.getOutputStream());
+            ResultEntity resultEntity = commonService.download(fileEntity, os);
 
             response.setHeader("code",resultEntity.getCode());
             response.setHeader("desc",new String(resultEntity.getDesc().getBytes(),"ISO-8859-1"));
+            response.getOutputStream().write(os.toByteArray());
+
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            try {
+                os.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @RequestMapping("/delete")
-    public ResultEntity delete(FileEntity fileEntity) {
+    public ResultEntity delete(@RequestBody FileEntity fileEntity) {
         ResultEntity resultEntity = null;
 
         try {

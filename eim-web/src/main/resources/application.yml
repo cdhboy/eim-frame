@@ -69,13 +69,13 @@ spring:
 file:
   store:
     #本地存储还是FTP存在（L：本地，F：FTP）
-    type: F
-    local: d:/fiel_root
-      ftp:
-       host: 10.170.20.135
-       user: chendh
-        pwd: chendh123
-       path: /
+    type: L
+    local: e:/file_root
+    ftp:
+      host: 10.170.20.135
+      user: chendh
+      pwd: chendh123
+      path: /
 
 jwt:
   route:
