@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>预览</title>
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <script src="../pdfjs/build/pdf.js"></script>
+    <script src="../pdfjs/build/pdf.worker.js"></script>
+</head>
+<html>
+<div class="box">
+    <iframe id="displayPdfIframe" src="../pdfjs/web/viewer.html?file=" width="100%"
+            height="100%"></iframe>
+</div>
+<script type="text/javascript">
+    $(function () {
+        // var url = 'key1=[[${key1}]]&key2=[[${key2}]]';
+        // console.log(url);
+        // $("#displayPdfIframe").attr("src", $("#displayPdfIframe").attr("src") + encodeURIComponent('[[@{static/update/app/win/1.pdf}]]'));
+        var key1 = GetUrlPara('key1');
+        var key2 = GetUrlPara('key2');
+
+        var url = "/eim-serv/api/deliver/pdf?key1=" + key1 + "&key2=" + key2;
+        $("#displayPdfIframe").attr("src", $("#displayPdfIframe").attr("src") + encodeURIComponent(url));
+
+    });
+
+    // windown.onload = function () {
+    //     var key1 = GetUrlPara('key1');
+    //     var key2 = GetUrlPara('key2');
+    //
+    //     var frame = document.getElementById('displayPdfIframe');
+    //     frame.src = "../pdfjs/web/viewer.html?file=/api/deliver/pdf?key" + key1 + "&key2=" + key2;
+    // }
+
+    function GetUrlPara(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+</script>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html, body {
+        height: 100%;
+    }
+
+    .box {
+        height: 100%;
+        background-color: blue;
+    }
+</style>
+</html>

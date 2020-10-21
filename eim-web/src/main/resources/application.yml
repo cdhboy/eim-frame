@@ -2,13 +2,15 @@ server:
   port: 8080
   servlet:
     context-path: /eim-serv
-
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
 spring:
   datasource:
     default:
       username: ruyoo
-      password: ruyoo123
-      url: jdbc:mysql://10.170.20.135:3306/ruyoodb
+      password: ruyoo@123
+      url: jdbc:mysql://121.40.162.254:3306/ruyoo_mf
       driver-class-name: com.mysql.jdbc.Driver
       type: com.alibaba.druid.pool.DruidDataSource
       #Spring Boot 默认是不注入这些属性值的，需要自己绑定
@@ -65,7 +67,11 @@ spring:
       useGlobalDataSourceStat: true
       #通过connectProperties属性来打开mergeSql功能；慢SQL记录
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-
+  thymeleaf:
+    cache: false
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML5
 file:
   store:
     #本地存储还是FTP存在（L：本地，F：FTP）

@@ -78,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // dont authenticate this particular request
                 .and()
                 .authorizeRequests()
-                .antMatchers(authenticationPath).permitAll()
+                .antMatchers(authenticationPath, "/api/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -97,7 +97,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoring()
                 .antMatchers(
                         HttpMethod.POST,
-                        authenticationPath
+                        authenticationPath,
+                        "/update/app/**",
+                        "/html/**",
+                        "/js/**",
+                        "/pdfjs/**",
+                        "/api/**"
                 )
 
                 // allow anonymous resource requests
@@ -105,12 +110,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoring()
                 .antMatchers(
                         HttpMethod.GET,
-                        "/",
-                        "/*.html",
-                        "/favicon.ico",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js"
+                        "/html/**",
+                        "/js/**",
+                        "/pdfjs/**",
+                        "/update/app/**",
+                        "/api/**"
                 );
     }
 }

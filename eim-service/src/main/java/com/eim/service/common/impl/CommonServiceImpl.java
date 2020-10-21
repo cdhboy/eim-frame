@@ -35,6 +35,8 @@ public class CommonServiceImpl implements CommonService {
 
         ResultEntity resultEntity = null;
 
+        formatSql(queryEntity);
+
         try {
             List<Map<String, Object>> list = daoHelper.doQuery(queryEntity.getDsKey(), queryEntity.getSql(), queryEntity.getObjs());
 
@@ -158,11 +160,11 @@ public class CommonServiceImpl implements CommonService {
         ResultEntity resultEntity = null;
         try {
             String sql = "select f.file_id, f.file_name, f.file_dir, c.file_path, f.company_id from sys_file f inner join sys_file_config c on f.file_type = c.file_type "
-                    + "where 1 = 1";
+                    + "where 1 = 1 ";
             if (StringUtils.hasText(fileEntity.getId())) {
-                sql += " and f.file_id = " + fileEntity.getId();
+                sql += "and f.file_id = " + fileEntity.getId();
             } else {
-                sql += "f.file_key = " + fileEntity.getKey() + " and f.file_type = '" + fileEntity.getType() + "' and f.company_id = " + fileEntity.getCompany();
+                sql += "and f.file_key = " + fileEntity.getKey() + " and f.file_type = '" + fileEntity.getType() + "' and f.company_id = " + fileEntity.getCompany();
             }
 
             List<Map<String, Object>> list = daoHelper.doQuery(fileEntity.getDsKey(), sql);
@@ -192,5 +194,45 @@ public class CommonServiceImpl implements CommonService {
         return resultEntity;
     }
 
+    private void formatSql(QueryEntity queryEntity) {
 
+        String dbType = "MySql";
+
+        // 默认非分页查询
+        String newSql = queryEntity.getSql();
+
+        // 计算总记录数Sql
+        if (queryEntity.getPageNum() == 0) {//
+            newSql = "select count(*) as record_count from ("
+                    + queryEntity.getSql() + ") t";
+        }
+
+        // 分页查询Sql
+        if (queryEntity.getPageNum() > 0) {
+
+            if ("MySql".equals(dbType)) {
+                newSql = "select * from (" + queryEntity.getSql()
+                        + ") t limit " + (queryEntity.getPageNum() - 1)
+                        * queryEntity.getPageSize() + ","
+                        + queryEntity.getPageSize();
+            }
+
+            if ("PgSql".equals(dbType)) {
+                newSql = queryEntity.getSql() + " limit "
+                        + queryEntity.getPageSize() + " offset "
+                        + (queryEntity.getPageNum() - 1)
+                        * queryEntity.getPageSize();
+            }
+
+            if ("Oracle".equals(dbType)) {
+                newSql = "select * from (select tt.*,rownum  row_num from ("
+                        + queryEntity.getSql() + ") tt ) where row_num > "
+                        + (queryEntity.getPageNum() - 1)
+                        * queryEntity.getPageNum() + " and row_num <= "
+                        + queryEntity.getPageSize() * queryEntity.getPageNum();
+            }
+        }
+
+        queryEntity.setSql(newSql);
+    }
 }
